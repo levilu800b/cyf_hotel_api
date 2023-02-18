@@ -6,18 +6,24 @@ const app = express();
 
 app.use(bodyParser.json());
 
-const db = new Pool ({
-    user: 'LeviL',
-    host: 'localhost',
-    database: 'cyf_hotel',
-    password: '',
-    port: 5432
-})
+const db = new Pool({
+	user: 'LeviL',
+	host: 'localhost',
+	database: 'cyf_hotel',
+	password: '',
+	port: 5432,
+});
+
+app.get('/customers', function (req, res) {
+	db.query('SELECT id, name, city, phone FROM customers', (error, result) => {
+		res.json(result.rows);
+	});
+});
 
 app.get('/', (req, res) => {
-    res.send('<h1>Hotel Database Project Home Page</h1>')
+	res.send('<h1>Hotel Database Project Home Page</h1>');
 });
 
 app.listen(3000, () => {
-    console.log('Server is running on port 3000');
-})
+	console.log('Server is running on port 3000');
+});
