@@ -64,10 +64,17 @@ app.post('/customers', function (req, res) {
 	const query =
 		'INSERT INTO customers (name, email, phone, address, city, postcode, country) ' +
 		'VALUES ($1, $2, $3, $4, $5, $6, $7)';
-
 	db.query(
 		query,
-		[newName, newEmail, newPhone, newAddress, newCity, newPostcode, newCountry],
+		[
+			newName,
+			newEmail,
+			newPhone,
+			newAddress,
+			newCity,
+			newPostcode,
+			newCountry,
+		],
 		(error, result) => {
 			res.status(201).send('Customer created');
 		}
