@@ -74,6 +74,38 @@ app.post('/customers', function (req, res) {
 	);
 });
 
+app.put('/customers/:customerId', function (req, res) {
+	const customerId = req.params.customerId;
+	const newName = req.body.name;
+	const newEmail = req.body.email;
+	const newPhone = req.body.phone;
+	const newAddress = req.body.address;
+	const newCity = req.body.city;
+	const newPostcode = req.body.postcode;
+	const newCountry = req.body.country;
+
+	const query =
+		'UPDATE customers SET name = $1, email = $2, phone = $3, address = $4, city = $5, postcode = $6, country = $7 ' +
+		'WHERE id = $8';
+
+	db.query(
+		query,
+		[
+			newName,
+			newEmail,
+			newPhone,
+			newAddress,
+			newCity,
+			newPostcode,
+			newCountry,
+			customerId,
+		],
+		(error, result) => {
+			res.status(200).send('Customer updated');
+		}
+	);
+});
+
 app.listen(3000, () => {
 	console.log('Server is running on port 3000');
 });
