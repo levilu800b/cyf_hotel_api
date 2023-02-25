@@ -94,7 +94,6 @@ app.put('/customers/:customerId', function (req, res) {
 	const query =
 		'UPDATE customers SET name = $1, email = $2, phone = $3, address = $4, city = $5, postcode = $6, country = $7 ' +
 		'WHERE id = $8';
-
 	db.query(
 		query,
 		[
