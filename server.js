@@ -66,18 +66,10 @@ app.post('/customers', function (req, res) {
 		'VALUES ($1, $2, $3, $4, $5, $6, $7)';
 	db.query(
 		query,
-		[
-			newName,
-			newEmail,
-			newPhone,
-			newAddress,
-			newCity,
-			newPostcode,
-			newCountry,
-		],
+		[newName, newEmail, newPhone, newAddress, newCity, newPostcode, newCountry],
 		(error, result) => {
 			res.status(201).send('Customer created');
-		}
+		},
 	);
 });
 
@@ -94,22 +86,21 @@ app.put('/customers/:customerId', function (req, res) {
 	const query =
 		'UPDATE customers SET name = $1, email = $2, phone = $3, address = $4, city = $5, postcode = $6, country = $7 ' +
 		'WHERE id = $8';
-	db.query(
-		query,
-		[
-			newName,
-			newEmail,
-			newPhone,
-			newAddress,
-			newCity,
-			newPostcode,
-			newCountry,
-			customerId,
-		],
-		(error, result) => {
-			res.status(200).send('Customer updated');
-		}
-	);
+	db.query(query, [
+		newName,
+		newEmail,
+		newPhone,
+		newAddress,
+		newCity,
+		newPostcode,
+		newCountry,
+		customerId,
+	])
+		.then(() => res.send(`Customer ${customerId} updated!`))
+		.catch((error) => {
+			console.error(error);
+			res.status(500).json({ error: 'Something went wrong' });
+		});
 });
 
 app.listen(3000, () => {
