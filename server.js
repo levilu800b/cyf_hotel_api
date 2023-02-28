@@ -52,6 +52,18 @@ app.get('/customers/by_city/:city', function (req, res) {
 	);
 });
 
+app.get('/customers/by_name/:name', function (req, res) {
+	const name = req.params.name;
+	db.query(
+		'SELECT id, name, city, phone FROM customers WHERE name = $1',
+		[name],
+		(error, result) => {
+			res.status(200).json({ customers: result.rows });
+		},
+	);
+});
+
+
 app.post('/customers', function (req, res) {
 	const newName = req.body.name;
 	const newEmail = req.body.email;
@@ -97,6 +109,16 @@ app.put('/customers/:customerId', function (req, res) {
 		customerId,
 	])
 		.then(() => res.send(`Customer ${customerId} updated!`))
+		.catch((error) => {
+			console.error(error);
+			res.status(500).json({ error: 'Something went wrong' });
+		});
+});
+
+app.delete('/customers/:customerId', function (req, res) {
+	const customerId = req.params.customerId;
+	db.query('DELETE FROM customers WHERE id = $1', [customerId])
+		.then(() => res.send(`Customer ${customerId} deleted!`))
 		.catch((error) => {
 			console.error(error);
 			res.status(500).json({ error: 'Something went wrong' });
